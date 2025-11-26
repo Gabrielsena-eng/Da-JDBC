@@ -1,10 +1,15 @@
 package application;
 
+import model.Dao.DaoFactory;
+import model.Dao.SellerDao;
 import model.entietes.Department;
+import model.entietes.Seller;
 
 public class Program {
     public static void main(String[] args) {
-        Department d = new Department(1, "Books");
-        System.out.println(d);
+
+        SellerDao sellerDao = DaoFactory.createSellerDao();
+        Seller seller = sellerDao.findById(3);
+        System.out.println(seller);
     }
 }
