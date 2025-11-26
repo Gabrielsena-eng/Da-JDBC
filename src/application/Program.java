@@ -5,12 +5,19 @@ import model.Dao.SellerDao;
 import model.entietes.Department;
 import model.entietes.Seller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Program {
     public static void main(String[] args) {
 
         SellerDao sellerDao = DaoFactory.createSellerDao();
         System.out.println("=== TEST 1: seller find by Id ===");
-        Seller seller = sellerDao.findById(3);
-        System.out.println(seller);
+        Department department = new Department(2, null);
+        List<Seller> list = sellerDao.findByDepartment(department);
+
+        for (Seller obj : list){
+            System.out.println(obj);
+        }
     }
 }

@@ -11,5 +11,8 @@ public interface SellerDao {
     void update(Seller obj);
     void deleteById(Seller id);
     Seller findById(Integer id);
+    Seller findByName(String name);
     List<Seller> findAll();
+    List<Seller> findByDepartment(Department department);
+
 }

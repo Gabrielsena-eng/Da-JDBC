@@ -11,7 +11,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerDaoJDBC implements SellerDao {
 
@@ -88,5 +91,80 @@ public class SellerDaoJDBC implements SellerDao {
     @Override
     public List<Seller> findAll() {
         return List.of();
+    }
+
+    @Override
+    public List<Seller> findByDepartment(Department department) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement(
+                    "select seller.*, department.Name as DepName " +
+                    "from seller inner join department " +
+                    "on seller.DepartmentId = department.Id " +
+                    "where DepartmentId = ? " +
+                    "order by Name");
+
+            st.setInt(1, department.getId());
+            rs = st.executeQuery();
+
+            List<Seller> list = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>();
+
+            while (rs.next()){
+
+                Department dep = map.get(rs.getInt("DepartmentId"));
+
+                if (dep == null){
+                    dep = instantiateDepartment(rs);
+                    map.put(rs.getInt("DepartmentId"), dep);
+                }
+
+                Seller obj = instatiateSeller(rs, dep);
+                list.add(obj);
+            }
+            return list;
+
+        }
+        catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+    }
+
+    @Override
+    public Seller findByName(String name) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement(
+                    "select seller.*, department.Name as DepName " +
+                            "from seller inner join department " +
+                            "On seller.DepartmentId = department.Id " +
+                            "where seller.Name = ? " +
+                            "order by Name");
+
+            st.setString(1, name);
+            rs = st.executeQuery();
+
+
+            if (rs.next()){
+                Department dep = instantiateDepartment(rs);
+                Seller obj = instatiateSeller(rs, dep);
+                return obj;
+            }
+            return null;
+        }catch (SQLException e){
+            throw new DbException(e.getMessage());
+        }
+        finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
     }
 }
