@@ -6,6 +6,7 @@ import model.entietes.Department;
 import model.entietes.Seller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Program {
@@ -25,5 +26,10 @@ public class Program {
         for (Seller obj : list){
             System.out.println(obj);
         }
+
+        System.out.println("=== TEST 3: seller insert ===");
+        Seller seller = new Seller(null, "Rebeka", "Rebeka@gmail.com", new Date(), 4000.0, department);
+        sellerDao.insert(seller);
+        System.out.println("Inserted! New id = " + seller.getId());
     }
 }
