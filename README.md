@@ -12,8 +12,8 @@ JDK: Versão 11 ou superior instalada.<br>
 Banco de Dados: Servidor MySQL rodando.<br>
  Driver: O projeto requer o driver JDBC do MySQL<br> 
 
-
-Script SQL para criar o banco de dados
+<br><br>
+<b>Script SQL para criar o banco de dados</b>
 ```sql
 CREATE DATABASE NomeBancoDeDados;
 USE NomeBancoDeDados;
